@@ -1,20 +1,58 @@
 <!DOCTYPE html>
-<html style="background: #000; color: #0f0;">
-<body>
-  <div style="animation: glitch 1s infinite; font-size: 24px;">
-    01001000 01001001 01000100 01000100 01000101 01001110
-  </div>
-  <p>提示：将二进制转换为文本</p>
-  
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>系统崩溃</title>
   <style>
+    body {
+      background: #000;
+      color: #0f0;
+      font-family: 'Courier New', monospace;
+      text-align: center;
+      padding: 50px 20px;
+    }
+    .glitch {
+      font-size: 2em;
+      animation: glitch 1s infinite;
+      margin: 20px 0;
+    }
+    .hint {
+      color: #fff;
+      font-size: 1.2em;
+      margin-top: 30px;
+    }
     @keyframes glitch {
-      0% { opacity: 1; }
-      50% { opacity: 0; }
-      100% { opacity: 1; }
+      0% { text-shadow: 2px 0 red; }
+      25% { text-shadow: -3px 0 blue; }
+      50% { text-shadow: 2px 0 red; }
+      75% { text-shadow: -3px 0 blue; }
+      100% { text-shadow: 2px 0 red; }
     }
   </style>
+</head>
+<body>
+  <div class="glitch">
+    01001000 01001001 01000100 01000100 01000101 01001110
+  </div>
+  
+  <div class="hint">
+    <p>二进制转文本 → ROT13解密</p>
+    <p>最终密码 = [解码结果] + 2024</p>
+  </div>
+
+  <!-- 隐藏提示（查看源码可见） -->
+  <!-- 
+    二进制解码步骤：
+    01001000 → H
+    01001001 → I
+    01000100 → D
+    01000100 → D
+    01000101 → E
+    01001110 → N
+    组合后：HIDDEN
+    ROT13转换：UVQQRA（无效，实际需保留原意）
+    最终密码：HIDDEN2024
+  -->
 </body>
 </html>
-<!-- 在原有代码基础上添加 -->
-<p>二进制转换结果：HIDDEN</p>
-<p>最终密码 = HIDDEN + 2024</p>
