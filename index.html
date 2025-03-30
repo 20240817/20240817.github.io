@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+   <html>
+   <body style="background: black; color: white; text-align: center;">
+     <h1>矿井救援行动</h1>
+     <p>用方向键移动，找到坐标 X=120, Z=-340！</p>
+     <script>
+       let x = 0, y = 0;
+       document.addEventListener('keydown', (e) => {
+         if (e.key === 'ArrowRight') x += 20;
+         if (e.key === 'ArrowLeft') x -= 20;
+         if (e.key === 'ArrowDown') y += 20;
+         if (e.key === 'ArrowUp') y -= 20;
+         if (x === 120 && y === -340) {
+           window.location.href = "crash.html";
+         }
+       });
+     </script>
+   </body>
+   </html>
