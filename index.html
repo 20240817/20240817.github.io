@@ -1,92 +1,132 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>矿井救援行动</title>
   <style>
-    body { 
-      background: black; 
-      color: white; 
+    :root {
+      --main-color: #00ff00;
+    }
+    body {
+      background: #000;
+      color: #fff;
       text-align: center;
       padding: 20px;
-      font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    #game-area {
+      width: 100%;
+      max-width: 600px;
+      margin: 20px auto;
+      position: relative;
+      flex-grow: 1;
     }
     #player {
       width: 20px;
       height: 20px;
-      background: #00ff00;
-      position: relative;
-      margin: 20px auto;
-      transition: transform 0.2s;
-    }
-    .controls {
-      margin-top: 20px;
-    }
-    button {
-      padding: 15px 20px;
-      margin: 5px;
-      font-size: 20px;
-      background: #333;
-      color: white;
-      border: 2px solid #00ff00;
-      border-radius: 5px;
+      background: var(--main-color);
+      position: absolute;
+      left: 0;
+      top: 0;
+      transition: transform 0.3s ease;
     }
     #coordinates {
-      font-size: 18px;
-      color: #00ff00;
-      margin: 10px 0;
+      font-size: 1.2em;
+      color: var(--main-color);
+      margin: 15px 0;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 20px;
+      background: #111;
+    }
+    button {
+      padding: 15px;
+      font-size: 1.2em;
+      background: #222;
+      border: 2px solid var(--main-color);
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:active {
+      background: #333;
+    }
+    @media (min-width: 768px) {
+      .controls { display: none; } /* PC端隐藏触控按钮 */
     }
   </style>
 </head>
 <body>
   <h1>矿井救援行动</h1>
-  <p>移动绿色方块，找到隐藏坐标 <strong>X=28, Z=24</strong></p>
-  <div id="coordinates">当前坐标：X=0, Z=0</div>
-  <div id="player"></div>
+  <p>移动绿色方块至坐标 <strong>X=100, Z=120</strong></p>
+  <div id="coordinates">当前位置：X=0, Z=0</div>
   
-  <!-- 触控按钮 -->
+  <div id="game-area">
+    <div id="player"></div>
+  </div>
+
+  <!-- 手机触控按钮 -->
   <div class="controls">
-    <button onclick="move('left')">←</button>
     <button onclick="move('up')">↑</button>
-    <button onclick="move('down')">↓</button>
+    <button onclick="move('left')">←</button>
     <button onclick="move('right')">→</button>
+    <button onclick="move('down')">↓</button>
   </div>
 
   <script>
-    let x = 0, z = 0; // 修改变量名更符合Z轴
-    const player = document.getElementById("player");
-    const coordDisplay = document.getElementById("coordinates");
+    // 游戏配置
+    const TARGET_X = 100
+    const TARGET_Z = 120
+    const STEP = 20
 
-    // 更新坐标显示
-    function updateDisplay() {
-      coordDisplay.textContent = `当前坐标：X=${x}, Z=${z}`;
-      player.style.transform = `translate(${x}px, ${z}px)`;
-      
-      // 目标坐标检查
-      if (x === 28 && z === 24) {
-        window.location.href = "crash.html";
+    // 游戏状态
+    let x = 0, z = 0
+    const player = document.getElementById('player')
+    const coordDisplay = document.getElementById('coordinates')
+
+    // 坐标更新函数
+    function updatePosition() {
+      player.style.transform = `translate(${x}px, ${z}px)`
+      coordDisplay.textContent = `当前位置：X=${x}, Z=${z}`
+
+      // 胜利检测
+      if (x === TARGET_X && z === TARGET_Z) {
+        window.location.href = 'crash.html'
       }
     }
 
-    // 统一移动逻辑
-    function handleMove(direction) {
-      const step = 20;
+    // 移动控制
+    function move(direction) {
       switch(direction) {
-        case 'left': x -= step; break;
-        case 'right': x += step; break;
-        case 'up': z -= step; break;
-        case 'down': z += step; break;
+        case 'left': x -= STEP; break
+        case 'right': x += STEP; break
+        case 'up': z -= STEP; break
+        case 'down': z += STEP; break
       }
-      updateDisplay();
+      updatePosition()
     }
 
     // 键盘控制
     document.addEventListener('keydown', (e) => {
-      const dir = e.key.replace('Arrow', '').toLowerCase();
-      if (['left','right','up','down'].includes(dir)) handleMove(dir);
-    });
+      const dirMap = {
+        ArrowLeft: 'left',
+        ArrowRight: 'right',
+        ArrowUp: 'up',
+        ArrowDown: 'down'
+      }
+      if (dirMap[e.key]) move(dirMap[e.key])
+    })
 
-    // 按钮控制
-    function move(dir) { handleMove(dir); }
+    // 初始位置更新
+    updatePosition()
   </script>
 </body>
 </html>
